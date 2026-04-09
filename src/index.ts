@@ -57,7 +57,7 @@ function main() {
   console.log('   Двоспрямований список');
   printStructure(stringDequeNew.data);
 
-  process.stdout.write('Після сортування: ');
+  console.log('Після сортування: ');
   stringDequeNew.sort(true);
   printStructure(stringDequeNew.data);
 }
