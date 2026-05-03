@@ -1,56 +1,65 @@
-import { BinaryTree } from './binary-tree';
-import { printTable } from './helpers';
+import { DoublyLinkedList } from './double-linked-list';
+import { insertionSortArray, insertionSortList } from './insertion-sort';
+import { pocketSortList } from './pocket-sort';
 import { Student } from './student';
 
-const students: Student[] = [
-  new Student('Іваненко', 'Олег', 2, 500, new Date(2004, 0, 15)),
-  new Student('Петренко', 'Анна', 3, 300, new Date(2003, 5, 20)),
-  new Student('Коваленко', 'Марія', 2, 700, new Date(2004, 1, 10)),
-  new Student('Шевченко', 'Дмитро', 1, 100, new Date(2005, 2, 5)),
-  new Student('Бондаренко', 'Ірина', 2, 400, new Date(2004, 0, 20)),
-  new Student('Кравченко', 'Тетяна', 2, 600, new Date(2004, 11, 25)),
-  new Student('Мороз', 'Павло', 4, 800, new Date(2002, 7, 18)),
-  new Student('Ткаченко', 'Сергій', 3, 450, new Date(2003, 4, 10)),
-  new Student('Лисенко', 'Наталія', 2, 900, new Date(2004, 1, 28)),
+const initialStudents: Student[] = [
+  new Student('Іваненко', 100, 30), // 0.30
+  new Student('Петренко', 80, 10), // 0.125
+  new Student('Сидоренко', 90, 45), // 0.50
+  new Student('Коваленко', 70, 7), // 0.10
+  new Student('Мороз', 60, 24), // 0.40
+  new Student('Бондаренко', 110, 55), // 0.50
+  new Student('Ткаченко', 85, 0), // 0.00
+  new Student('Левченко', 95, 38), // 0.40
 ];
 
-console.log('РІВЕНЬ 1 | побудова та паралельний обхід');
+console.log('\nРІВЕНЬ 1: Одновимірний масив, сортування вставкою');
 
-const tree1 = new BinaryTree();
-for (const s of students) {
-  tree1.insert(s);
+console.log('\n--- Масив ДО сортування ---');
+for (const student of initialStudents) {
+  console.log(student.toString());
 }
 
-console.log('Дерево (паралельний обхід)');
-printTable(tree1.levelOrder());
+const sortedArray: Student[] = insertionSortArray(initialStudents);
 
-console.log('\nРІВЕНЬ 2 | пошук за критерієм');
-
-const tree2 = new BinaryTree();
-for (const s of students) {
-  tree2.insert(s);
+console.log(
+  '\n--- Масив ПІСЛЯ сортування вставкою (за зростанням співвідношення) ---',
+);
+for (const student of sortedArray) {
+  console.log(student.toString());
 }
 
-console.log('Дерево (паралельний обхід)');
-printTable(tree2.levelOrder());
+console.log('\nРІВЕНЬ 2: Двоспрямований список, сортування вставкою');
 
-console.log('\nКритерій пошуку: студенти 2-го курсу, що народилися взимку');
-const studFound = tree2.search();
-
-if (studFound.length === 0) {
-  console.log('Результат пошуку: нічого не знайдено');
-} else {
-  printTable(studFound);
+const list = new DoublyLinkedList();
+for (const student of initialStudents) {
+  list.append(student);
 }
 
-console.log('\nРІВЕНЬ 3 | видалення вузлів за критерієм');
+console.log('\n--- Список ДО сортування ---');
+list.print();
+`~`;
+const sortedList = insertionSortList(list);
 
-const tree3 = new BinaryTree();
-for (const s of students) tree3.insert(s);
+console.log(
+  '\n--- Список ПІСЛЯ сортування вставкою (за зростанням співвідношення) ---',
+);
+sortedList.print();
 
-printTable(tree3.levelOrder());
+console.log('\nРІВЕНЬ 3: Двоспрямований список, кишеньковий сорт');
 
-console.log('\nВидалення студентів 2-го курсу, що народилися взимку');
-tree3.deleteMatching();
+const list3 = new DoublyLinkedList();
+for (const student of initialStudents) {
+  list3.append(student);
+}
 
-printTable(tree3.levelOrder());
+console.log('\n--- Список ДО сортування ---');
+list3.print();
+
+const sortedList3 = pocketSortList(list3);
+
+console.log(
+  '\n--- Список ПІСЛЯ кишенькового сортування (за зростанням співвідношення) ---',
+);
+sortedList3.print();
