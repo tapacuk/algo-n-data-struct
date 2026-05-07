@@ -1,21 +1,12 @@
 export class Student {
-  lastName: string;
-  totalClasses: number;
-  missedClasses: number;
-
-  constructor(lastName: string, totalClasses: number, missedClasses: number) {
-    this.lastName = lastName;
-    this.totalClasses = totalClasses;
-    this.missedClasses = missedClasses;
-  }
-
-  getRatio(): number {
-    if (this.totalClasses === 0) return 0;
-    return this.missedClasses / this.totalClasses;
-  }
+  constructor(
+    public lastName: string,
+    public course: number,
+    public faculty: string,
+    public missedClasses: number,
+  ) {}
 
   toString(): string {
-    const ratio = this.getRatio().toFixed(4);
-    return `співвідношення=${ratio} | ${this.lastName} | всього занять: ${this.totalClasses} | пропущено: ${this.missedClasses}`;
+    return `[Прізвище: ${this.lastName}, Курс: ${this.course}, Факультет: ${this.faculty}, Пропуски: ${this.missedClasses}]`;
   }
 }
