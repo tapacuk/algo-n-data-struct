@@ -12,7 +12,7 @@ export class Node {
   }
 }
 
-export class RootBST {
+export class BinarySearch {
   root: Node | null = null;
 
   search(key: string): Student | null {

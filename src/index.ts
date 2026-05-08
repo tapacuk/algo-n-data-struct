@@ -1,6 +1,6 @@
 import { generateStudents, sortStudents, binarySearch } from './array-search';
 import { RandomizedBST } from './randomized-bst';
-import { RootBST } from './root-bst';
+import { BinarySearch } from './binary-search';
 import { Student } from './student';
 
 console.log('РІВЕНЬ 1: Робота з одновимірним масивом ');
@@ -36,7 +36,7 @@ const testStudents = [
 ];
 
 console.log('\nРІВЕНЬ 2: Робота з BST-деревом (вставка в корінь) ');
-const bst = new RootBST();
+const bst = new BinarySearch();
 
 console.log('Додавання вузлів та виведення дерева (обхід в ширину):');
 for (const student of testStudents) {

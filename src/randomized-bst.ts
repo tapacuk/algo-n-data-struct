@@ -1,7 +1,7 @@
-import { RootBST, Node } from './root-bst';
+import { BinarySearch, Node } from './binary-search';
 import { Student } from './student';
 
-export class RandomizedBST extends RootBST {
+export class RandomizedBST extends BinarySearch {
   insertTreap(node: Node | null, student: Student): Node {
     if (node === null) {
       return new Node(student);
