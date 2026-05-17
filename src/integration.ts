@@ -4,7 +4,7 @@ function f(x: number): number {
 
 export function trapezoidMethod(a: number, b: number, h: number): number {
   const n = Math.round((b - a) / h);
-  let sum = (f(a) + f(b)) / 2;
+  let sum = (f(a) + f(b)) * 0.5;
 
   for (let i = 1; i < n; i++) {
     sum += f(a + i * h);
