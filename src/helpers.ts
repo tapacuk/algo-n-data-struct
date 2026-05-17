@@ -35,14 +35,14 @@ export function runRootFinding(a: number, b: number): void {
     return;
   }
 
-  console.log('Знайдено підінтервалів зі зміною знаку: ' + subIntervals.length);
+  console.log('Знайдено коренів: ' + subIntervals.length);
   console.log('');
 
   for (let i = 0; i < subIntervals.length; i++) {
     const sub = subIntervals[i]!;
     const la = sub[0]!;
     const lb = sub[1]!;
-    console.log('Підінтервал [' + la.toFixed(3) + ', ' + lb.toFixed(3) + ']:');
+    console.log('Корені [' + la.toFixed(3) + ', ' + lb.toFixed(3) + ']:');
 
     const rBisect = bisectionMethod(la, lb);
     const rNewton = newtonMethod(la, lb);
