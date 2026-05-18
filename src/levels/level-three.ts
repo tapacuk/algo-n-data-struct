@@ -136,7 +136,7 @@ export function runLevel3(): void {
     .filter((w) => w !== '');
 
   console.log('Рівень 3: синтаксичний аналізатор на основі таблиці переходів');
-  console.log('Rozdilnyky: $ ta @');
+  console.log('Роздільники: $ @');
   console.log('');
 
   for (const word of words) {
