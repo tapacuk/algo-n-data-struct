@@ -1,146 +1,43 @@
 import * as fs from 'fs';
-import * as path from 'path';
 
-import { type CharClass, getCharClass } from '../char-class';
-import { State, ACCEPTING_STATES } from '../states';
+function generateArrangements(n: number, k: number): number[][] {
+  const result: number[][] = [];
+  const elements: number[] = Array.from({ length: n }, (_, i) => i + 1);
+  const used: boolean[] = new Array(n).fill(false);
+  const current: number[] = [];
 
-type TransitionTable = Map<State, Map<CharClass, State>>;
-
-function buildTable() {
-  const table = new Map();
-
-  const row = (entries: [CharClass, State][]): Map<CharClass, State> => {
-    const map = new Map<CharClass, State>();
-    for (const [cls, st] of entries) {
-      map.set(cls, st);
+  function backtrack(): void {
+    if (current.length === k) {
+      result.push([...current]);
+      return;
     }
-    return map;
-  };
-
-  table.set(
-    State.Q0,
-    row([
-      ['upper', State.Q1],
-      ['digit', State.ERR],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q1,
-    row([
-      ['upper', State.Q2],
-      ['digit', State.Q6],
-      ['underscore', State.Q3],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q2,
-    row([
-      ['upper', State.Q2],
-      ['digit', State.Q6],
-      ['underscore', State.Q3],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q3,
-    row([
-      ['upper', State.Q4],
-      ['digit', State.Q5],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q4,
-    row([
-      ['upper', State.Q4],
-      ['digit', State.ERR],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q5,
-    row([
-      ['upper', State.ERR],
-      ['digit', State.Q5],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.Q6,
-    row([
-      ['upper', State.ERR],
-      ['digit', State.Q6],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-  table.set(
-    State.ERR,
-    row([
-      ['upper', State.ERR],
-      ['digit', State.ERR],
-      ['underscore', State.ERR],
-      ['other', State.ERR],
-    ]),
-  );
-
-  return table;
-}
-
-function analyzeTableBased(word: string, table: TransitionTable): boolean {
-  let state: State = State.Q0;
-
-  for (let i = 0; i < word.length; i++) {
-    const ch = word[i];
-    if (ch === undefined) {
-      return false;
-    }
-
-    const cls: CharClass = getCharClass(ch);
-    const stateRow = table.get(state);
-
-    if (stateRow === undefined) {
-      return false;
-    }
-
-    const nextSt = stateRow.get(cls);
-
-    if (nextSt === undefined) {
-      return false;
-    }
-
-    state = nextSt;
-
-    if (state === State.ERR) {
-      return false;
+    for (let i = 0; i < n; i++) {
+      if (!used[i]) {
+        used[i] = true;
+        current.push(elements[i]!);
+        backtrack();
+        current.pop();
+        used[i] = false;
+      }
     }
   }
 
-  return ACCEPTING_STATES.has(state);
+  backtrack();
+  return result;
 }
 
-export function runLevel3(): void {
-  const table = buildTable();
-  const filePath = path.join(__dirname, '../data/words3.txt');
-  const content = fs.readFileSync(filePath, 'utf-8');
+export function solveLevelThree(n: number, k: number): void {
+  console.log('=== Завдання 3 ===');
+  console.log(`Генерацiя усiх розмiщень A(${n}, ${k})...`);
 
-  const words = content
-    .split(/[$@]/)
-    .map((w) => w.trim())
-    .filter((w) => w !== '');
+  const arrangements = generateArrangements(n, k);
+  const lines = arrangements.map((arr, i) => `${i + 1}: (${arr.join(', ')})`);
+  const content =
+    `Розмiщення A(${n}, ${k}) - всього ${arrangements.length}\n\n` +
+    lines.join('\n');
 
-  console.log('Рівень 3: синтаксичний аналізатор на основі таблиці переходів');
-  console.log('Роздільники: $ @');
-  console.log('');
-
-  for (const word of words) {
-    const valid = analyzeTableBased(word, table);
-    console.log('  ' + word + ' -> ' + (valid ? '+' : '-'));
-  }
+  fs.writeFileSync('arrangements.txt', content, 'utf-8');
+  console.log(
+    `Записано ${arrangements.length} розмiщень у файл arrangements.txt`,
+  );
 }

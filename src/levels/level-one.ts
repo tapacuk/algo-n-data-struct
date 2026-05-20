@@ -1,20 +1,13 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import { arrangement } from '../combinatorics';
 
-const REGEX = /^[A-Z]+_?([A-Z]+|\d+)$/;
+export function solveLevelOne(n: number, k: number) {
+  const result = arrangement(n, k);
 
-export function runLevel1(): void {
-  const filePath = path.join(__dirname, '../data/words1.txt');
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const lines = content.split(/\r?\n/).filter((line) => line.trim() !== '');
-
-  console.log('Рівень 1: пошук за виразом');
-  console.log('/^[A-Z]+_?([A-Z]+|\\d+)$/');
-  console.log('');
-
-  for (const line of lines) {
-    const word = line.trim();
-    const isMatch = REGEX.test(word);
-    console.log('  ' + word + ' -> ' + (isMatch ? '+' : '-'));
-  }
+  console.log('=== Завдання 1 ===');
+  console.log('Тип вибiрки: Розмiщення без повторень A(n, k)');
+  console.log(`Кiлькiсть студентiв: ${n}, кiлькiсть посад: ${k}`);
+  console.log(`A(${n}, ${k}) = ${n}*${n - 1}*${n - 2} = ${result}`);
+  console.log(
+    `Вiдповiдь: кiлькiсть варiантiв органу самоврядування = ${result}`,
+  );
 }

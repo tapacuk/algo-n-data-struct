@@ -1,115 +1,18 @@
-import * as readline from 'readline';
-import { getCharClass } from '../char-class';
-import { State, ACCEPTING_STATES } from '../states';
+import { permutationWithRepetition } from '../combinatorics';
 
-function nextState(current: State, ch: string): State {
-  const cls = getCharClass(ch);
+export function solveLevelTwo(): void {
+  // Odd digits of octal system: 1, 3, 5, 7
+  // Largest (7) and smallest (1) appear 3 times, rest (3, 5) appear 1 time each
+  // Total: 3+1+1+3 = 8 digits
+  const n = 8;
+  const counts = [3, 1, 1, 3]; // digit 1: x3, digit 3: x1, digit 5: x1, digit 7: x3
 
-  switch (current) {
-    case State.Q0:
-      switch (cls) {
-        case 'upper':
-          return State.Q1;
-        default:
-          return State.ERR;
-      }
+  const result = permutationWithRepetition(n, counts);
 
-    case State.Q1:
-      switch (cls) {
-        case 'upper':
-          return State.Q2;
-        case 'underscore':
-          return State.Q3;
-        case 'digit':
-          return State.Q6;
-        default:
-          return State.ERR;
-      }
-
-    case State.Q2:
-      switch (cls) {
-        case 'upper':
-          return State.Q2;
-        case 'underscore':
-          return State.Q3;
-        case 'digit':
-          return State.Q6;
-        default:
-          return State.ERR;
-      }
-
-    case State.Q3:
-      switch (cls) {
-        case 'upper':
-          return State.Q4;
-        case 'digit':
-          return State.Q5;
-        default:
-          return State.ERR;
-      }
-
-    case State.Q4:
-      switch (cls) {
-        case 'upper':
-          return State.Q4;
-        default:
-          return State.ERR;
-      }
-
-    case State.Q5:
-      switch (cls) {
-        case 'digit':
-          return State.Q5;
-        default:
-          return State.ERR;
-      }
-
-    case State.Q6:
-      switch (cls) {
-        case 'digit':
-          return State.Q6;
-        default:
-          return State.ERR;
-      }
-
-    default:
-      return State.ERR;
-  }
-}
-
-export function analyzeSwitchBased(word: string): boolean {
-  let state: State = State.Q0;
-
-  for (const ch of word) {
-    state = nextState(state, ch);
-
-    if (state === State.ERR) {
-      return false;
-    }
-  }
-
-  return ACCEPTING_STATES.has(state);
-}
-
-export function runLevel2(): Promise<void> {
-  return new Promise((resolve) => {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
-    console.log('Рівень 2: синтаксичний аналізатор на основі switch');
-
-    rl.question('введіть слово: ', (input) => {
-      const word = input.trim();
-      const valid = analyzeSwitchBased(word);
-
-      console.log(
-        '  слово "' + word + '": ' + (valid ? 'правильне' : 'неправильне'),
-      );
-
-      rl.close();
-      resolve();
-    });
-  });
+  console.log('=== Завдання 2 ===');
+  console.log('Тип вибiрки: Перестановки з повтореннями P(n; n1,n2,...)');
+  console.log('Непарнi цифри вiсiмкової системи: 1, 3, 5, 7');
+  console.log('Набiр: 1(x3), 3(x1), 5(x1), 7(x3) -> всього 8 цифр');
+  console.log(`P(8; 3,1,1,3) = 8! / (3!*1!*1!*3!) = ${result}`);
+  console.log(`Вiдповiдь: кiлькiсть восьмизначних чисел = ${result}`);
 }
