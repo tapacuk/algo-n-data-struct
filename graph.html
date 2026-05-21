@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Графік результатів (Рунге-Кутта)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f9f9f9;
+      }
+      .chart-container {
+        width: 80%;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart-container">
+      <h2>Залежність функції та її похідної від часу</h2>
+      <canvas id="rkChart"></canvas>
+    </div>
+
+    <script>
+      // Наші дані з таблиці
+      const timeLabels = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+      const dataY = [
+        1.0, 0.995, 0.9801, 0.9553, 0.9211, 0.8776, 0.8253, 0.7648, 0.6967,
+        0.6216, 0.5403,
+      ];
+      const dataDy = [
+        0.0, -0.0998, -0.1987, -0.2955, -0.3894, -0.4794, -0.5646, -0.6442,
+        -0.7174, -0.7833, -0.8415,
+      ];
+
+      // Отримуємо доступ до елемента canvas
+      const ctx = document.getElementById('rkChart').getContext('2d');
+
+      // Налаштовуємо графік
+      const rkChart = new Chart(ctx, {
+        type: 'line', // Тип графіка - лінійний
+        data: {
+          labels: timeLabels, // Осі X (час)
+          datasets: [
+            {
+              label: 'Функція (y)',
+              data: dataY,
+              borderColor: 'rgba(54, 162, 235, 1)', // Синій колір лінії
+              backgroundColor: 'rgba(54, 162, 235, 0.2)', // Заливка точок
+              borderWidth: 2,
+              tension: 0.3, // Робить лінію плавною
+              pointRadius: 4,
+            },
+            {
+              label: 'Похідна (dy)',
+              data: dataDy,
+              borderColor: 'rgba(255, 99, 132, 1)', // Червоний колір лінії
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Час (t)',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Значення',
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
